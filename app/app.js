@@ -13,7 +13,7 @@ myApp.config(function ($stateProvider, $urlRouterProvider) {
         .state('dashboard', {
         url: '/dashboard',
         templateUrl: 'components/dashboard/dashboard.html',
-        controller: ''
+        controller: 'accountCtrl'
     })
         .state('dashboard.account', {
             url: '/account',
@@ -25,6 +25,11 @@ myApp.config(function ($stateProvider, $urlRouterProvider) {
             templateUrl: 'components/dashboard/dashboard-employees.html',
             controller: 'employeesCtrl'
         })
+        .state('dashboard.location', {
+            url: '/location',
+            templateUrl: 'components/dashboard/dashboard-location.html',
+            controller: 'locationCtrl'
+        })
 
         .state('dashboard.logs', {
             url: '/logs',
@@ -34,14 +39,7 @@ myApp.config(function ($stateProvider, $urlRouterProvider) {
 
     $urlRouterProvider.otherwise('/home');
 });
-myApp.config(['$httpProvider', function($httpProvider) {
-    $httpProvider.defaults.useXDomain = true;
-    $httpProvider.defaults.withCredentials = true;
-    delete $httpProvider.defaults.headers.common["X-Requested-With"];
-    $httpProvider.defaults.headers.common["Accept"] = "application/json";
-    $httpProvider.defaults.headers.common["Content-Type"] = "application/json";
-}
-]);
+
 myApp.controller('accountCtrl', ['$scope', '$http', accountCtrl]);
 
 //AngularJS controller method
@@ -54,179 +52,43 @@ function accountCtrl($scope, $http) {
             $scope.error = "An Error has occured while loading posts!";
         })
     }
-/*function accountCtrl($scope) {
-    $scope.account = {
-        "realName": "J. Random User",
-        "login": "jrandom",
-        "role": "manager",
-        "key": "b613679a0814d9ec772f95d778c35fc5ff1697c493715653c6c712144292c5ad"
-    };
-}*/
-myApp.controller('employeesCtrl', ['$scope',  employeesCtrl]);
 
-//AngularJS controller method
-function employeesCtrl($scope) {
+myApp.controller('employeesCtrl', ['$scope','$http',  employeesCtrl]);
+function employeesCtrl($scope, $http) {
+    $http.get('https://worktime-tracking.herokuapp.com/employee').success(function (response) {
+        $scope.employees = response;
+    });
     $scope.isselect = false;
     $scope.showDetail = function (p) {
         $scope.selectedPerson = p;
         $scope.isselect = true;
-    }
-    //Select all the data's
-    $scope.employees = [
-        {"realName": "Sang",
-            "login": "jrandom",
-            "role": "employer",
-            "month": "2016-11",
-            "totalWorkingHours": 42.1,
-            "dailyWork": [
-                {
-                    "day": "2016-12-01",
-                    "workingHours": 7.9,
-                    "note": ""
-                },
-                {
-                    "day": "2016-12-02",
-                    "workingHours": 8.3,
-                    "note": ""
-                },
-                {
-                    "day": "2016-12-05",
-                    "workingHours": 0.0,
-                    "note": "I have a meeting in Helsinki."
-                }
-            ]},
-        {"realName": "Benjamin",
-            "login": "jrandom",
-            "role": "employer",
-
-            "month": "2016-12",
-            "totalWorkingHours": 14.1,
-            "dailyWork": [
-                {
-                    "day": "2016-12-01",
-                    "workingHours": 7.9,
-                    "note": ""
-                },
-                {
-                    "day": "2016-12-02",
-                    "workingHours": 8.3,
-                    "note": ""
-                },
-                {
-                    "day": "2016-12-05",
-                    "workingHours": 0.0,
-                    "note": "I have a meeting in Helsinki."
-                }
-            ]
-        },
-        {"realName": "Kushal",
-            "login": "jrandom",
-            "role": "employer",
-
-            "month": "2016-12",
-            "totalWorkingHours": 100.1,
-            "dailyWork": [
-                {
-                    "day": "2016-12-01",
-                    "workingHours": 7.9,
-                    "note": ""
-                },
-                {
-                    "day": "2016-12-02",
-                    "workingHours": 8.3,
-                    "note": ""
-                },
-                {
-                    "day": "2016-12-05",
-                    "workingHours": 0.0,
-                    "note": "I have a meeting in Helsinki."
-                }
-            ]},
-        {"realName": "Roman",
-            "login": "jrandom",
-            "role": "employer",
-
-            "month": "2016-12",
-            "totalWorkingHours": 123.1,
-            "dailyWork": [
-                {
-                    "day": "2016-12-01",
-                    "workingHours": 7.9,
-                    "note": ""
-                },
-                {
-                    "day": "2016-12-02",
-                    "workingHours": 8.3,
-                    "note": ""
-                },
-                {
-                    "day": "2016-12-05",
-                    "workingHours": 0.0,
-                    "note": "I tired."
-                }
-            ]
-
-        },
-        {"realName": "Sofia",
-            "login": "jrandom",
-            "role": "employer",
-
-            "month": "2016-12",
-            "totalWorkingHours": 142.1,
-            "dailyWork": [
-                {
-                    "day": "2016-12-01",
-                    "workingHours": 7.9,
-                    "note": ""
-                },
-                {
-                    "day": "2016-12-02",
-                    "workingHours": 8.3,
-                    "note": ""
-                },
-                {
-                    "day": "2016-12-05",
-                    "workingHours": 0.0,
-                    "note": "i have a day off."
-                }
-            ]
-        }
-    ]
+    };
+}
+myApp.controller('locationCtrl', ['$scope','$http',  locationCtrl]);
+function locationCtrl($scope, $http) {
+    $http.get('https://worktime-tracking.herokuapp.com/location').success(function (response) {
+        $scope.locations = response;
+    });
 
 }
-/*
-myApp.controller('EmployeeController', ['$scope',  EmployeeController]);
-
-function EmployeeController($scope, $http) {
-    //Select all the data's
-    $http.get('https://worktime-tracking.herokuapp.com//employee').success(function (response ) {
-        $scope.Empoyees = response.data;
-    })
-        .error(function () {
-            $scope.error = "An Error has occured while loading posts!";
+myApp.controller('logsCtrl', ['$scope','$http',  logsCtrl]);
+function logsCtrl($scope, $http) {
+    $http.get('https://worktime-tracking.herokuapp.com/employee').success(function (response) {
+        $scope.employees = response;
+    });
+    $scope.isselect = false;
+    $scope.showDetail = function (p) {
+        $http.get('https://worktime-tracking.herokuapp.com/employee/'+p.userId+'/logs').success(function (data) {
+            $scope.selectedPerson = p;
+            $scope.selectedPerson = angular.extend(data,p);
+            $scope.isselect = true;
         });
+
+    }
 }
-*/
 
-/*angular.module('myApp.dashboard', ['ui.router']).config(function ($stateProvider) {np
-    $stateProvider.
-    state('dashboard.account', {
-        url: '/account',
-        templateUrl: '',
-        controller: ''
-    }).
-    state('dashboard.employee', {
-        url: '/employee',
-        templateUrl: '',
-        controller: ''
-    }).
-    state('dashboard.location', {
-        url: '/location',
-        templateUrl: '',
-        controller: ''
-    })
 
-})
+/*
  var app = angular.module('myApp.dashboard', []);
 
  //AngularJS controller
@@ -245,12 +107,12 @@ function EmployeeController($scope, $http) {
 
  //Select single data
  $scope.getSingleData = function (Employee) {
- $http.get('/api/employee/'+ Employee.realName).success(function (data) {
- $scope.Employee = data;
- })
- .error(function () {
- $scope.error = "An Error has occured while loading posts!";
- });
+     $http.get('/api/employee/' + Employee.realName).success(function (data) {
+         $scope.Employee = data;
+     })
+         .error(function () {
+             $scope.error = "An Error has occured while loading posts!";
+         });
  }
 
 

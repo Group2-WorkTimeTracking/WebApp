@@ -1,0 +1,19 @@
+<div ng-controller="locationCtrl">
+
+
+    <table class="table table-striped"  >
+        <thead>
+        <tr>
+            <th>ID</th><th>Address</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="location in locations">
+            <td>{{location.locationId}}</td>
+            <td>{{location.placeName}}</td>
+
+        </tr>
+
+        </tbody>
+    </table>
+</div>

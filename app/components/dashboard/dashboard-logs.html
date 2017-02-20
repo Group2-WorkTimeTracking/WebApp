@@ -1,0 +1,44 @@
+<div ng-controller="logsCtrl">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>#</th><th>Name</th><th>Role</th><th>#</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr  ng-repeat="employee in employees ">
+            <td>#</td><td>{{employee.realName}}</td>
+            <td>{{employee.role}}</td>
+
+            <td><button class="btn btn-default" ng-click="showDetail(employee)">Show Detail</button> </td>
+
+        </tr>
+
+        </tbody>
+    </table>
+
+    <table class="table table-striped"  ng-hide="!isselect">
+        <thead>
+        <tr>
+            <th>Month: {{selectedPerson.month}} </th>
+            <th>Total Working hours: {{selectedPerson.totalWorkingHours}} </th>
+            <th>Role: {{selectedPerson.role}}</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <thead>
+        <tr>
+            <th>Day in Month</th><th>working hours by day</th><th>Note</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="day in selectedPerson.dailyWork">
+            <td>{{day.day}}</td>
+            <td>{{day.workingHours}}</td>
+            <td>{{day.note}}</td>
+
+        </tr>
+        </tbody>
+    </table>
+</div>
