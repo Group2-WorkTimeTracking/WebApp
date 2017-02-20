@@ -147,15 +147,18 @@ hr.small {
 .toggle {
     margin: 5px 5px 0 0;
 }
-
+.parent-header{
+    width: 100%;
+    height: 100%;
+}
 /* Header */
 
-.header {
+.header{
     display: table;
     position: relative;
     width: 100%;
     height: 100%;
-    background: url(../images/bg2.jpg) no-repeat center center scroll;
+    background: url(../images/bg.jpg) no-repeat center center scroll;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     background-size: cover;
